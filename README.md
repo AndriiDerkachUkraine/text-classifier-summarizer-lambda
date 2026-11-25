@@ -71,6 +71,8 @@ node app/run.js --input sample/emails.json --mode classify --provider anthropic
 
 `app/run.js` loads `.env` automatically. `--provider` overrides `MODEL_PROVIDER`.
 
+> The Claude adapter is covered by unit tests with a mocked client (request shape, structured outputs, batching, parsing, refusals, missing key). It was not run against the live API during development: the default local backend fully covers the assignment, which asks for one working backend.
+
 ### CLI options
 
 ```
