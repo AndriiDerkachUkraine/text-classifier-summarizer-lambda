@@ -31,6 +31,9 @@ export function truncate(text, maxChars) {
  */
 
 /**
+ * @param {unknown} raw  item as received in the event
+ * @param {number} index position in the input (becomes `WorkItem.key`)
+ * @param {{ maxChars: number }} limits
  * @returns {{ ok: true, item: WorkItem, warnings: string[] }
  *         | { ok: false, id: string|number|null, error: string, reason: string }}
  */

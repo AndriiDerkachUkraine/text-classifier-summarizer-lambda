@@ -9,7 +9,10 @@ function parseLevel(value) {
   return resolved in LEVELS ? resolved : 'INFO';
 }
 
-/** @returns {import('../application/ports.js').Logger} */
+/**
+ * @param {{ level?: string, sink?: (line: string) => void, context?: object }} [options] context = fields on every record
+ * @returns {import('../application/ports.js').Logger}
+ */
 export function createLogger({ level, sink = (line) => process.stderr.write(`${line}\n`), context = {} } = {}) {
   const threshold = LEVELS[parseLevel(level)];
 
