@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Text classifier / summarizer Lambda (two deployment variants of the same code).
+
+Parameters:
+  AnthropicApiKey:
+    Type: String
+    NoEcho: true
+    Default: ''
+    Description: Only for the API variant. In production prefer Secrets Manager / SSM.
+
+Globals:
+  Function:
+    Timeout: 120
+    Architectures: [x86_64]
+
+Resources:
+  # Claude API: small zip, fast cold start.
+  ClassifierApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: nodejs22.x
+      CodeUri: .
+      Handler: app/handler.handler
+      MemorySize: 256
+      Environment:
+        Variables:
+          MODEL_PROVIDER: anthropic
+          ANTHROPIC_API_KEY: !Ref AnthropicApiKey
+      FunctionUrlConfig:
+        AuthType: AWS_IAM
+
+  # Local model in a container image; 4 GB because Lambda scales CPU with memory.
+  ClassifierLocalFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Image
+      MemorySize: 4096
+      Timeout: 300
+    Metadata:
+      Dockerfile: Dockerfile
+      DockerContext: .
+      DockerTag: local-model
+
+Outputs:
+  ApiFunctionUrl:
+    Value: !GetAtt ClassifierApiFunctionUrl.FunctionUrl

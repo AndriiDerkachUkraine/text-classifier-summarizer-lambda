@@ -1,0 +1,23 @@
+{
+  "name": "text-classifier-summarizer-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda that classifies short texts (e.g. emails) into topics or summarizes them, with pluggable local / LLM-API backends.",
+  "type": "module",
+  "main": "app/handler.js",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "classify": "node app/run.js --input sample/emails.json --mode classify --log-level INFO",
+    "summarize": "node app/run.js --input sample/emails.json --mode summarize --log-level INFO",
+    "models:fetch": "node scripts/fetch-models.js",
+    "test": "node --test \"test/**/*.test.js\""
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.14.0"
+  },
+  "optionalDependencies": {
+    "node-llama-cpp": "^3.22.3"
+  }
+}

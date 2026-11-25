@@ -1,0 +1,11 @@
+node_modules/
+# Model weights are downloaded on demand (pinned in models.lock.json), never committed.
+models/
+*.part
+.env
+*.log
+.DS_Store
+.aws-sam/
+# IDE settings
+.idea/
+.vscode/

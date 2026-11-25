@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "subject": "Invoice #1234 overdue",
+    "body": "Dear customer,\n\nOur records show that invoice #1234 for $2,450.00, issued on October 1, is now 15 days overdue. Please arrange payment by November 30 to avoid a late fee of 2%. If you have already paid, kindly send us the remittance details.\n\nBest regards,\nAccounts Receivable"
+  },
+  {
+    "id": 2,
+    "subject": "Weekly engineering sync",
+    "body": "Agenda: 1) status of the payments API migration to Node 22, 2) last Friday's database outage post-mortem, 3) on-call rotation for December. Please add your updates to the shared doc before Thursday 10:00. The meeting link stays the same."
+  },
+  {
+    "id": 3,
+    "subject": "Company retreat announcement",
+    "body": "We invite you to our annual company retreat in the Carpathians on June 12-14! Expect team-building workshops, hiking and a gala dinner. Please confirm your attendance with HR by May 1. We will also film short videos for our social media campaign, so feel free to bring your best smile."
+  },
+  { "id": 4, "subject": "", "body": "  " }
+]
