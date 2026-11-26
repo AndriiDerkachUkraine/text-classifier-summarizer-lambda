@@ -82,6 +82,8 @@ export function createLocalLlmProvider(config) {
 
       const system = buildSystemPrompt(FRAMING, mode, ctx);
       const results = new Map();
+      const meter = session.sequence.tokenMeter;
+      const before = meter.getState();
 
       for (const item of items) {
         try {
@@ -99,7 +101,9 @@ export function createLocalLlmProvider(config) {
           results.set(item.key, error instanceof Error ? error : new Error(String(error)));
         }
       }
-      return { results };
+      // Free to run, but token counts show how much the trimming and dedupe save.
+      const used = meter.diff(before);
+      return { results, usage: { inputTokens: used.usedInputTokens, outputTokens: used.usedOutputTokens } };
     },
   };
 }

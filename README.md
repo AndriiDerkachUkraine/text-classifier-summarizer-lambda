@@ -89,7 +89,7 @@ The result goes to **stdout** and the logs (JSON lines) go to **stderr**, so you
 ### Sample data
 
 - [`sample/emails.json`](sample/emails.json): the four emails from the assignment, with realistic bodies.
-- [`sample/emails-edge-cases.json`](sample/emails-edge-cases.json): sales, legal and support emails, a Norwegian email, a prompt-injection attempt, duplicates, quoted reply history, an over-long body, a subject-only item, and six kinds of invalid input.
+- [`sample/emails-edge-cases.json`](sample/emails-edge-cases.json): sales, legal and support emails, a Norwegian email, a prompt-injection attempt, duplicates, quoted reply history, an over-long body, a subject-only item, and five invalid items (wrong types, no id, not an object, empty).
 
 ---
 
@@ -138,10 +138,10 @@ Every request ends with a single summary log line, for example:
 ```json
 {"level":"INFO","msg":"request completed","mode":"classify","provider":"local","model":"qwen2.5-1.5b-instruct",
  "items":4,"succeeded":3,"failed":1,"errors":{"empty_input":1},"cacheHits":0,"duplicatesSkipped":0,
- "modelCalls":1,"retriedItems":0,"inputTokens":0,"outputTokens":0,"durationMs":9950}
+ "modelCalls":1,"retriedItems":0,"inputTokens":664,"outputTokens":115,"durationMs":10138}
 ```
 
-With `anthropic`, this line also contains the real `inputTokens` / `outputTokens` and `estimatedCostUsd`.
+Tokens are counted for both backends; with `anthropic`, the line also contains `estimatedCostUsd`.
 
 ---
 
@@ -220,7 +220,7 @@ Cost here means API money for the `anthropic` backend and CPU time / memory for 
 | **Compact prompt format** | `llm-prompt.js` | Emails are sent as tagged plain text, not JSON (no escaping, no repeated keys). |
 | **Output caps** | `max_tokens`, grammar `maxLength` | Bounded output = bounded cost and latency. |
 | **Lazy imports** | `providers/index.js` | An API-only Lambda never loads the native llama.cpp addon (faster cold start); `node-llama-cpp` is an *optional* dependency and can be omitted from the package. |
-| **Cost visibility** | `request completed` log | Tokens and estimated USD per request, queryable in CloudWatch Logs Insights. |
+| **Cost visibility** | `request completed` log | Tokens per request (both backends) and estimated USD (API), queryable in CloudWatch Logs Insights. |
 
 Deliberately **not** used:
 - **Prompt caching:** the shared prefix (~300 tokens) is below the minimum cacheable length, so it would have no effect. Batching amortizes the prompt instead.
